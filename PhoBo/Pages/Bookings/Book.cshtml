@@ -1,0 +1,65 @@
+﻿@page
+@model PhoBo.Pages.Bookings.BookModel
+
+@{
+    ViewData["Title"] = "Book";
+    var keyValuePairs = new Dictionary<string, string>
+    {
+        { "customerId", @Model.Customer.Id.ToString() },
+        { "photographerId", @Model.Photographer.Id.ToString() }
+    };
+}
+
+<h1>Book</h1>
+
+<h4>Booking</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label for="concept" class="control-label">Concept</label>
+                <select id="concept" name="conceptId" asp-items="Model.PhotographerConcepts" class="form-control"></select>
+            </div>
+            <div id="duration" class="form-group">
+            </div>
+            <div class="form-group">
+                <label asp-for="Booking.Location" class="control-label"></label>
+                <input asp-for="Booking.Location" class="form-control" />
+                <span asp-validation-for="Booking.Location" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Booking.Note" class="control-label"></label>
+                <input asp-for="Booking.Note" class="form-control" />
+                <span asp-validation-for="Booking.Note" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-all-route-data="keyValuePairs" type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        loadDuration();
+        $(function () {
+            $('#concept').on('change', function () {
+                console.log('change');
+                loadDuration();
+            });
+        });
+
+        function loadDuration() {
+            let conceptId = $('#concept').val();
+            $('#duration').load('?handler=Duration&conceptId=' + conceptId, function() {
+                $('#duration input[type="radio"]:first').trigger('click');
+            });
+        }
+    </script>
+
+}

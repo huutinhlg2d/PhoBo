@@ -1,0 +1,185 @@
+﻿@page
+@using PhoBo.Models
+@model PhoBo.Pages.Bookings.ConfigModel
+
+@{
+    ViewData["Title"] = "Config";
+    var photographerId = Model.Photographer.Id;
+}
+
+<h1>Config</h1>
+
+<h4>Concept Configuration</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        @foreach(BookingConceptConfig config in Model.BookingConceptConfigs)
+        {
+            <div id="config-container-@config.Id">
+                 <form class="form-inline">
+                    <h5>@config.Concept.Name</h5>
+                    <div class="form-group">
+                        <label asp-for="@config.DurationConfig" class="control-label mr-4">Duration Config</label>
+                        <input id="duration-config-@config.Id" asp-for="@config.DurationConfig" disabled class="form-control mr-2" />
+                        <input type="button" class="edit-func-button btn btn-primary mr-2" value="Edit" data-id="@config.Id"/>
+                        <input type="button" class="delete-func-button btn btn-danger mr-2" value="Delete" data-id="@config.Id"/>
+                    </div>
+                </form>
+                <span id="duration-config-@config.Id-error" asp-validation-for="@config.DurationConfig" class="text-danger"></span>
+            </div>
+        }
+    </div>
+</div>
+
+<div>
+    <div id="add-func-buttons" class="d-flex mt-3">
+        <button class="btn btn-primary mr-2" id="add-button">Add new</button>
+        <button class="btn btn-primary mr-2" id="ok-button">Ok</button>
+        <button class="btn btn-danger mr-2" id="cancel-button">Cancel</button>
+    </div>
+    <div id="add-container"></div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(".edit-func-button").click(function() {
+            let _this = $(this);
+            let _input = _this.parent().children("input[type=text]")
+            if (_this.val() == "Edit") {
+                _this.val("OK");
+                _input.prop("disabled", false);
+            }
+            else {
+                if(validateDuration(_input)){
+                    $(`#${_input.attr("id")}-error`).html("");
+                    $.ajax({
+                        type: "GET",
+                        url: `?handler=UpdateDurationConfig&id=${_this.data("id")}&duration=${_input.val()}`,
+                        success: function(data) {
+                            console.log(data);
+                        }
+                    });
+                    _this.val("Edit");
+                    _input.prop("disabled", true);
+                } 
+                else {
+                    $(`#${_input.attr("id")}-error`).html("Duration format is wrong.</br> Duration format: <strong>duration[0]:duration[1]: ... : duration[n]</strong> (duration[i] is always smaller than duration[i+1])");
+                }
+            }
+        })
+
+        $(".delete-func-button").click(function() {
+            let _this = $(this);
+            
+            $.ajax({
+                type: "GET",
+                url: `?handler=DeleteDurationConfig&id=${_this.data("id")}`,
+                success: function(data) {
+                    console.log(data);
+                    $('#config-container-' + _this.data('id')).remove();
+                }
+            });
+        })
+
+        let _all_button = $('#add-func-buttons');
+        let _add = $('#add-button');
+        let _ok = $('#ok-button');
+        let _cancel = $('#cancel-button');
+        let _container = $('#add-container');
+
+        _cancel.hide();
+        _ok.hide();
+        _container.hide();
+
+        _add.click(function() {
+            _all_button.hide(500, function() 
+            {
+                _add.hide();
+                _ok.show();
+                _cancel.show();
+                _all_button.show(500);
+            });
+            _container.load("?handler=AddConceptConfig&photographerId=@photographerId", function()
+            {
+                _container.show(500);
+            });
+        });
+
+        _cancel.click(function() {
+            _all_button.hide(500, function()
+            {
+                _cancel.hide();
+                _ok.hide();
+                _add.show();
+                _all_button.show(500);
+            });
+            _container.hide(500, function()
+            {
+                _container.html("");
+            });
+        });
+
+        _ok.click(function() {
+            var formData = new FormData($('#add-config-form')[0]);
+            _input = $("#add-duration");
+
+
+            if(validateDuration(_input)){
+                $(`#${_input.attr("id")}-error`).html("");
+                $.ajax({
+                    type: 'POST',
+                    url: "",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    dataType: "json",
+                    success: function(response) {
+                        console.log('success');
+                        $(location).attr('href', 'https://localhost:44337/Bookings/Config?id=1');
+                    }
+                });
+            } 
+            else {
+                $(`#${_input.attr("id")}-error`).html("Duration format is wrong.</br> Duration format: <strong>duration[0]:duration[1]: ... : duration[n]</strong> (duration[i] is always smaller than duration[i+1])");
+            }
+
+            for(const pair of formData.entries()) {
+              console.log(`${pair[0]}, ${pair[1]}`);
+            }
+        });
+
+        function validateDuration(durationInput){
+            let duration = durationInput.val();
+
+            console.log(duration);
+
+            let values = duration.split(":");
+
+            let validValues = duration.split(":").filter(element => element);
+
+            let isValid = true;
+
+            console.log(values.length + " < " + validValues.length, values.length < validValues.length)
+            //check value lenght is valid
+            if(values.length > validValues.length) isValid = false;
+
+            //check value lenght is number
+            values.forEach(value => 
+            {
+                console.log(value + ": ", isNaN(value));
+                if(isNaN(value)) isValid = false;
+            });
+
+            //check value lenght is asending
+            if(!values.slice(1).every((e,i) => {
+                console.log(e, " > ", values[i], e > values[i]);
+                return e > values[i];
+            })) return isValid = false;
+
+            return isValid;
+        }
+    </script>
+}

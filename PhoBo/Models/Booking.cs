@@ -19,7 +19,7 @@ namespace PhoBo.Models
         public int ConceptId { get; set; }
         public Concept Concept { get; set; }
         public DateTime BookingDate { get; set; }
-        public DateTime BookingRate { get; set; }
+        public float BookingRate { get; set; }
         [Required(ErrorMessage = "Duration is required")]
         public float Duration { get; set; }
         [Required(ErrorMessage = "Location is required")]
