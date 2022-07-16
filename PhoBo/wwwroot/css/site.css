@@ -265,12 +265,12 @@ a.tm-text-primary:hover {
 }
 
 .nav-item {
-    margin-right: 30px;
+    /*margin-right: 30px;*/
 }
 
-    .nav-item:last-child {
-        margin-right: 0;
-    }
+.nav-item:last-child {
+    margin-right: 0;
+}
 
 .nav-link {
     color: #666666;

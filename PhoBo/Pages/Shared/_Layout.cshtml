@@ -1,4 +1,12 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@using PhoBo.Models
+@using PhoBo.Auth
+@{
+    User user = Auth.GetUser(Context);
+    var isLogin = !Auth.IsLogged(Context);
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -27,14 +35,32 @@
                     </ul>
                 </div>
                 <div style="margin: auto; width:200px;">
-                    <img src="~/lib/img_avatar.png" style=" background-color: pink; width: 50px; height: 50px; border-radius: 50%; display: inline-block;">
-                    <a class="nav-link text-dark" style="display: inline-block;" asp-page="/Index">Logout</a>
+                    @if (isLogin)
+                    {
+                        <img src="@(user?.AvatarUrl ?? "img/avatar/img_avatar.png")" style="object-fit: cover; background-color: pink; width: 50px; height: 50px; border-radius: 50%; display: inline-block;">
+                        <a class="nav-link text-dark" style="display: inline-block;" asp-page="/Index">Logout</a>
+                    } else
+                    {
+                        <div>
+                            <a class="nav-link text-dark" style="display: inline-block;" asp-page="/Login">Login</a> |
+                            <a class="nav-link text-dark" style="display: inline-block;" asp-page="/Register">Register</a>
+                        </div>
+                    }
                 </div>
             </div>
         </nav>
     </header>
     <div class="container">
         <main role="main" class="pb-3">
+
+            <!-- Page Loader -->
+            <div id="loader-wrapper">
+                <div id="loader"></div>
+
+                <div class="loader-section section-left"></div>
+                <div class="loader-section section-right"></div>
+            </div>
+
             @RenderBody()
         </main>
     </div>
@@ -47,7 +73,14 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+@*    <script src="~/js/site.js" asp-append-version="true"></script>*@
+    <script src="~/js/plugins.js"></script>
+    <!-- End Page Loader -->
+    <script>
+            $(window).on("load", function() {
+                $('body').addClass('loaded');
+            });
+    </script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

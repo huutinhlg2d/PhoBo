@@ -440,3 +440,4 @@ E:\NET Project\PhoBo\PhoBo\obj\Debug\net5.0\PhoBo.Views.pdb
 E:\NET Project\PhoBo\PhoBo\obj\Debug\net5.0\PhoBo.csproj.CopyComplete
 E:\NET Project\PhoBo\PhoBo\obj\Debug\net5.0\PhoBo.genruntimeconfig.cache
 E:\NET Project\PhoBo\PhoBo\obj\Debug\net5.0\ref\PhoBo.dll
+E:\NET Project\PhoBo\PhoBo\obj\Debug\net5.0\Razor\Pages\Users\Details.cshtml.g.cs

@@ -186,8 +186,12 @@ h2 {
   font-size: 36px; }
 
 .main {
-  background: #0d6efd;
-  padding: 150px 0; }
+    background: #0d6efd;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 .clear {
   clear: both; }
@@ -249,8 +253,9 @@ body {
   -o-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%); }
 
-.signup {
-  margin-bottom: 150px; }
+.signup, .signin {
+
+}
 
 .signup-content {
   padding: 75px 0; }

@@ -1,13 +1,21 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using PhoBo.Models;
 
 namespace PhoBo.Auth
 {
     public class Auth
     {
-        public User GetUser(string userJsonString)
+        public static User GetUser(HttpContext context)
         {
-            return JsonConvert.DeserializeObject<User>(userJsonString);
+            string userJsonString = context.Session.GetString("user");
+            if (string.IsNullOrEmpty(userJsonString)) { return null; }
+            else { return JsonConvert.DeserializeObject<User>(userJsonString); }
+        }
+
+        public static bool IsLogged(HttpContext context)
+        {
+            return GetUser(context) == null;
         }
     }
 }
