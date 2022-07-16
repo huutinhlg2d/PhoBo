@@ -20,6 +20,7 @@ namespace PhoBo.Pages.Users
         }
 
         public User User { get; set; }
+        public Photographer Photographer { get; set; }
         public int something { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
@@ -30,6 +31,8 @@ namespace PhoBo.Pages.Users
             }
 
             User = await _context.User.FirstOrDefaultAsync(m => m.Id == id);
+
+            Photographer = await _context.Photographer.FirstOrDefaultAsync(m => m.Id == id);
 
             if (User == null)
             {

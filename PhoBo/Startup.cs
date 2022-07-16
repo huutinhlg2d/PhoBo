@@ -27,6 +27,7 @@ namespace PhoBo
         {
             services.AddRazorPages();
 
+            services.AddMvc().AddRazorRuntimeCompilation();
             services.AddDbContext<PhoBoContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("PhoBoContext")));
         }
