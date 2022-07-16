@@ -25,6 +25,10 @@ namespace PhoBo
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSession();
+
+            services.AddMemoryCache();
+
             services.AddRazorPages();
 
             services.AddMvc().AddRazorRuntimeCompilation();
@@ -48,7 +52,10 @@ namespace PhoBo
             }
 
             app.UseHttpsRedirection();
+
             app.UseStaticFiles();
+
+            app.UseSession();
 
             app.UseRouting();
 
