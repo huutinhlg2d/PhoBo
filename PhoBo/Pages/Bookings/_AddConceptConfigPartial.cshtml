@@ -1,0 +1,8 @@
+﻿@model List<SelectListItem>
+<form id="add-config-form" class="form-inline mt-3" method="post">
+	<label for="concept" class="control-label mr-2">Concept</label>
+	<select asp-items="Model" class="form-control mr-2" name="conceptId"></select>
+	<label for="duration" class="control-label mr-2">Duration</label>
+	<input id="add-duration" type="text" name="duration" class="form-control mr-2"/>
+	<span id="add-duration-error" class="text-danger field-validation-valid"></span>
+</form>

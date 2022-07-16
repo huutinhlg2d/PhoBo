@@ -14,6 +14,6 @@ namespace PhoBo.Models
         [ForeignKey("Concept")]
         public int ConceptId { get; set; }
         public Concept Concept { get; set; }
-        public string DurationConfig { get; set; } //<n: number of ratio>:[1],[2],[3]...[n]
+        public string DurationConfig { get; set; }
     }
 }

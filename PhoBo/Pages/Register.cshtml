@@ -1,0 +1,53 @@
+﻿@page
+@model PhoBo.Pages.RegisterModel
+@{
+    Layout = "_AuthLayout";
+}
+
+<div class="main">
+
+    <!-- Sign up form -->
+    <section class="signup">
+        <div class="container">
+            <div class="signup-content justify-content-center">
+                <div class="signup-form">
+                    <h2 class="form-title">Sign up</h2>
+                    <form method="POST" class="register-form" id="register-form">
+                        <div class="form-group">
+                            <label asp-for="Register.Name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                            <input asp-for="Register.Name" placeholder="Your Name"/>
+                            <span asp-validation-for="Register.Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Register.Email"><i class="zmdi zmdi-email"></i></label>
+                            <input asp-for="Register.Email" placeholder="Your Email"/>
+                            <span asp-validation-for="Register.Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Register.Password"><i class="zmdi zmdi-lock"></i></label>
+                            <input type="password" asp-for="Register.Password" placeholder="Password"/>
+                            <span asp-validation-for="Register.Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Register.Repassword"><i class="zmdi zmdi-lock-outline"></i></label>
+                            <input type="password" asp-for="Register.Repassword" placeholder="Repeat your password"/>
+                            <span asp-validation-for="Register.Repassword" class="text-danger"></span>
+                        </div>
+                        <div class="form-group d-flex">
+                            <label asp-for="Register.DateOfBirth" for="date-of-birth" class="col-4" style="color: #999; border-bottom: 1px solid #999; padding: 6px 30px;"></label>
+                            <input asp-for="Register.DateOfBirth" id="date-of-birth" class="col-8 ms-auto"/>
+                            <span asp-validation-for="Register.DateOfBirth" class="text-danger"></span>
+                        </div>
+                         <div class="form-group">
+                            <select asp-for="Register.Role" asp-items="@Model.registerRoles" class="form-select"></select>
+                        </div>
+                        
+                        <div class="form-group form-button">
+                            <input type="submit" name="signup" id="signup" class="btn btn-primary" value="Register"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

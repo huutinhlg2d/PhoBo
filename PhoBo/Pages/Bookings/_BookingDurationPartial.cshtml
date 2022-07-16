@@ -1,0 +1,13 @@
+﻿@model List<String>
+<label for="duration" class="control-label">Duration</label>
+<div>
+	@foreach(var @duration in Model)
+	{
+		<div class="form-check form-check-inline">
+			  <input class="form-check-input" type="radio" name="duration" value="@duration" id="duration@Model.IndexOf(@duration)">
+			  <label class="form-check-label" for="duration(@Model.IndexOf(@duration))">
+				@duration
+			  </label>
+		</div>
+	}
+</div>
