@@ -1,0 +1,181 @@
+﻿@page
+@model PhoBo.Pages.Users.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+<div id="loader-wrapper">
+    <div id="loader"></div>
+
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+
+</div>
+
+<div class="container-fluid tm-container-content tm-mt-60">
+    <div class="row mb-4">
+        <h2 class="col-12 tm-text-primary">Detail</h2>
+    </div>
+    <div class="row tm-mb-90">
+        <div class="col-xl-8 col-lg-7 col-md-6 col-sm-12">
+            <img src="~/lib/img/img-01.jpg" alt="Image" class="img-fluid" style="width: 100%">
+        </div>
+        <div class="col-xl-4 col-lg-5 col-md-6 col-sm-12">
+            <div class="tm-bg-gray tm-video-details">
+
+                <div class="mb-4">
+                    <h4 class="tm-text-gray-dark mb-3" style=" display: inline-block; margin-right: 20px;">Name</h4>
+                    <p style="display: inline-block; font-size:20px;">@Model.User.Name</p>
+                </div>
+                <div class="mb-4">
+                    <h4 class="tm-text-gray-dark mb-3" style=" display: inline-block; margin-right: 38px;">Role</h4>
+                    <p style="display: inline-block; font-size: 20px;">@Model.User.Role</p>
+                </div>
+                @if (Model.User.Role == Models.UserRole.Photographer)
+                {
+                    <div class="mb-4">
+                        <h4 class="tm-text-gray-dark mb-3" style=" display: inline-block; margin-right: 36px;">Rate</h4>
+                        <p style="display: inline-block; font-size: 20px;">@Model.Photographer.Rate</p>
+                    </div>
+                    <div class="mb-4">
+                        <h3 class="tm-text-gray-dark mb-3">Tags</h3>
+                        <a href="#" class="tm-text-primary mr-4 mb-2 d-inline-block">Cloud</a>
+                        <a href="#" class="tm-text-primary mr-4 mb-2 d-inline-block">Bluesky</a>
+                        <a href="#" class="tm-text-primary mr-4 mb-2 d-inline-block">Nature</a>
+                        <a href="#" class="tm-text-primary mr-4 mb-2 d-inline-block">Background</a>
+                    </div>
+                    <div class="text-center">
+                        <a href="#" class="btn btn-primary tm-btn-big">BOOK</a>
+                    </div>
+                }
+
+
+
+            </div>
+        </div>
+    </div>
+    @if (Model.User.Role == Models.UserRole.Photographer)
+    {
+        <div class="row mb-4">
+            <h2 class="col-12 tm-text-primary">
+                Project
+            </h2>
+        </div>
+        <div class="row mb-3 tm-gallery">
+            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-5">
+                <figure class="effect-ming tm-video-item">
+                    <img src="~/lib/img/img-01.jpg" alt="Image" class="img-fluid">
+                    <figcaption class="d-flex align-items-center justify-content-center">
+                        <h2>Hangers</h2>
+                        <a href="#">View more</a>
+                    </figcaption>
+                </figure>
+                <div class="d-flex justify-content-between tm-text-gray">
+                    <span class="tm-text-gray-light">16 Oct 2020</span>
+                    <span>12,460 views</span>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-5">
+                <figure class="effect-ming tm-video-item">
+                    <img src="~/lib/img/img-02.jpg" alt="Image" class="img-fluid">
+                    <figcaption class="d-flex align-items-center justify-content-center">
+                        <h2>Perfumes</h2>
+                        <a href="#">View more</a>
+                    </figcaption>
+                </figure>
+                <div class="d-flex justify-content-between tm-text-gray">
+                    <span class="tm-text-gray-light">12 Oct 2020</span>
+                    <span>11,402 views</span>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-5">
+                <figure class="effect-ming tm-video-item">
+                    <img src="~/lib/img/img-03.jpg" alt="Image" class="img-fluid">
+                    <figcaption class="d-flex align-items-center justify-content-center">
+                        <h2>Clocks</h2>
+                        <a href="#">View more</a>
+                    </figcaption>
+                </figure>
+                <div class="d-flex justify-content-between tm-text-gray">
+                    <span class="tm-text-gray-light">8 Oct 2020</span>
+                    <span>9,906 views</span>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-5">
+                <figure class="effect-ming tm-video-item">
+                    <img src="~/lib/img/img-04.jpg" alt="Image" class="img-fluid">
+                    <figcaption class="d-flex align-items-center justify-content-center">
+                        <h2>Plants</h2>
+                        <a href="#">View more</a>
+                    </figcaption>
+                </figure>
+                <div class="d-flex justify-content-between tm-text-gray">
+                    <span class="tm-text-gray-light">6 Oct 2020</span>
+                    <span>16,100 views</span>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-5">
+                <figure class="effect-ming tm-video-item">
+                    <img src="~/lib/img/img-05.jpg" alt="Image" class="img-fluid">
+                    <figcaption class="d-flex align-items-center justify-content-center">
+                        <h2>Morning</h2>
+                        <a href="#">View more</a>
+                    </figcaption>
+                </figure>
+                <div class="d-flex justify-content-between tm-text-gray">
+                    <span class="tm-text-gray-light">26 Sep 2020</span>
+                    <span>16,008 views</span>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-5">
+                <figure class="effect-ming tm-video-item">
+                    <img src="~/lib/img/img-06.jpg" alt="Image" class="img-fluid">
+                    <figcaption class="d-flex align-items-center justify-content-center">
+                        <h2>Pinky</h2>
+                        <a href="#">View more</a>
+                    </figcaption>
+                </figure>
+                <div class="d-flex justify-content-between tm-text-gray">
+                    <span class="tm-text-gray-light">22 Sep 2020</span>
+                    <span>12,860 views</span>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-5">
+                <figure class="effect-ming tm-video-item">
+                    <img src="~/lib/img/img-07.jpg" alt="Image" class="img-fluid">
+                    <figcaption class="d-flex align-items-center justify-content-center">
+                        <h2>Bus</h2>
+                        <a href="#">View more</a>
+                    </figcaption>
+                </figure>
+                <div class="d-flex justify-content-between tm-text-gray">
+                    <span class="tm-text-gray-light">12 Sep 2020</span>
+                    <span>10,900 views</span>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-5">
+                <figure class="effect-ming tm-video-item">
+                    <img src="~/lib/img/img-08.jpg" alt="Image" class="img-fluid">
+                    <figcaption class="d-flex align-items-center justify-content-center">
+                        <h2>New York</h2>
+                        <a href="#">View more</a>
+                    </figcaption>
+                </figure>
+                <div class="d-flex justify-content-between tm-text-gray">
+                    <span class="tm-text-gray-light">4 Sep 2020</span>
+                    <span>11,300 views</span>
+                </div>
+            </div>
+        </div> <!-- row -->
+    }
+
+</div> <!-- container-fluid, tm-container-content -->
+
+<script src="~/js/plugins.js"></script>
+<script>
+        $(window).on("load", function() {
+            $('body').addClass('loaded');
+        });
+</script>
