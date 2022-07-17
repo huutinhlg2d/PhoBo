@@ -15,7 +15,11 @@ namespace PhoBo.Auth
 
         public static bool IsLogged(HttpContext context)
         {
-            return GetUser(context) == null;
+            return GetUser(context) != null;
+        }
+
+        public static void Logout(HttpContext context) {
+            context.Session.Remove("user");
         }
     }
 }
