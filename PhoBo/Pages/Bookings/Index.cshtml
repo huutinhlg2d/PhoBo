@@ -1,8 +1,8 @@
 ﻿@page
+@using PhoBo.Models
 @model PhoBo.Pages.Bookings.IndexModel
-
 @{
-    ViewData["Title"] = "Index";
+    User user = Model.currentUser;  
 }
 
 <h1>Booking history</h1>
@@ -10,9 +10,18 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Booking[0].Photographer)
-            </th>
+            @if (@user.Role.Equals(UserRole.Photographer))
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.Booking[0].Customer)
+                </th>
+            }
+            else if (@user.Role.Equals(UserRole.Customer))
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.Booking[0].Photographer)
+                </th>
+            }
             <th>
                 @Html.DisplayNameFor(model => model.Booking[0].Concept)
             </th>
@@ -31,18 +40,34 @@
             <th>
                 @Html.DisplayNameFor(model => model.Booking[0].Note)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking[0].State)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model.Booking)
         {
-            if (item.Id == 3)
+            if 
+            (
+                @user.Role.Equals(UserRole.Photographer) && item.PhotographerId == @user.Id
+                || @user.Role.Equals(UserRole.Customer) && item.CustomerId == @user.Id
+            )
             {
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Photographer.Name)
-                    </td>
+                    @if (@user.Role.Equals(UserRole.Photographer))
+                    {
+                        <td>
+                            <a asp-page="../Users/Details" asp-route-id="@item.CustomerId">@item.Customer.Name</a>
+                        </td>
+                    }
+                    else if (@user.Role.Equals(UserRole.Customer))
+                    {
+                        <td>
+                            <a asp-page="../Users/Details" asp-route-id="@item.PhotographerId">@item.Photographer.Name</a>
+                        </td>
+                    }
                     <td>
                         @Html.DisplayFor(modelItem => item.Concept.Name)
                     </td>
@@ -61,13 +86,62 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Note)
                     </td>
+                    <td id="booking-@item.Id-state">
+                        @Html.DisplayFor(modelItem => item.State)
+                    </td>
                     <td>
-                        <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                        @*<a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
                         <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                        <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>*@
+                        @Html.AntiForgeryToken()
+                        <div>
+                            @if(item.State.Equals(BookingState.Waiting))
+                            {
+                                @if(user.Role.Equals(UserRole.Photographer))
+                                {
+                                    <button data-action="Accept" data-id="@item.Id" class="booking-button btn btn-primary">Accept</button>
+                                    <button data-action="Decline" data-id="@item.Id" class="booking-button btn btn-danger">Decline</button>
+                                }
+                                else if(user.Role.Equals(UserRole.Customer))
+                                {  
+                                    <button data-action="Cancel" data-id="@item.Id" class="booking-button btn btn-danger">Cancel</button>
+                            
+                                }
+                            }   
+                        </div>
                     </td>
                 </tr>
             }
         }
     </tbody>
 </table>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $(".booking-button").click(function() {
+            let _this = $(this);
+            let id = _this.data("id");
+            let action = _this.data("action");
+            let token = $('input[name="__RequestVerificationToken"]').val();
+
+            console.log(`?handler=${action}`);
+
+            $.ajax({
+                url: `?handler=${action}`,
+                headers: {"RequestVerificationToken": token},
+                type: "POST",
+                data: { id: id },
+                success: function(response) {
+                    if (response.result == "OK") {
+                        _this.parent().remove();
+                        $(`#booking-${id}-state`).html(response.value);
+                    } else {
+                        console.log(response.value);
+                    }
+                }
+            });
+        });
+    </script>
+}

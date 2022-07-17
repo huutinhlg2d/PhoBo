@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -19,14 +20,74 @@ namespace PhoBo.Pages.Bookings
             _context = context;
         }
 
+        public User currentUser { get; set; }
+
         public IList<Booking> Booking { get;set; }
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
+            Debug.WriteLine($"[{this}]GET: ");
+
+            currentUser = Auth.Auth.GetUser(HttpContext);
+
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
+
             Booking = await _context.Booking
                 .Include(b => b.Concept)
                 .Include(b => b.Customer)
                 .Include(b => b.Photographer).ToListAsync();
+
+            return Page();
+        }
+
+        public void OnPost()
+        {
+            Debug.WriteLine($"[{this}]POST:");
+        }
+        
+        public JsonResult OnPostCancel(int id)
+        {
+            Debug.WriteLine($"[{this}]POST: id={id}");
+
+            Booking booking = _context.Booking.ToList().Find(b => b.Id == id);
+
+            if(!booking?.State.Equals(BookingState.Waiting) ?? false) return new JsonResult(new {result = "ERROR", value="Id not found"});
+
+            booking.State = BookingState.Canceled;
+            _context.SaveChanges();
+
+            return new JsonResult(new { result = "OK", value = "Canceled"});
+        }
+
+        public JsonResult OnPostAccept(int id)
+        {
+            Debug.WriteLine($"[{this}]POST: id={id}");
+
+            Booking booking = _context.Booking.ToList().Find(b => b.Id == id);
+
+            if (!booking?.State.Equals(BookingState.Waiting) ?? false) return new JsonResult(new { result = "ERROR", value = "Id not found" });
+
+            booking.State = BookingState.Accepted;
+            _context.SaveChanges();
+
+            return new JsonResult(new { result = "OK", value = "Accepted" });
+        }
+
+        public JsonResult OnPostDecline(int id)
+        {
+            Debug.WriteLine($"[{this}]POST: id={id}");
+
+            Booking booking = _context.Booking.ToList().Find(b => b.Id == id);
+
+            if (!booking?.State.Equals(BookingState.Waiting) ?? false) return new JsonResult(new { result = "ERROR", value = "Id not found" });
+
+            booking.State = BookingState.Declined;
+            _context.SaveChanges();
+
+            return new JsonResult(new { result = "OK", value = "Declined" });
         }
     }
 }

@@ -4,7 +4,7 @@ using PhoBo.Models;
 
 namespace PhoBo.Auth
 {
-    public class Auth
+    public static class Auth
     {
         public static User GetUser(HttpContext context)
         {
@@ -15,7 +15,7 @@ namespace PhoBo.Auth
 
         public static bool IsLogged(HttpContext context)
         {
-            return GetUser(context) == null;
+            return GetUser(context) != null;
         }
     }
 }

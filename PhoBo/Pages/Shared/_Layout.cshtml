@@ -3,7 +3,7 @@
 @using PhoBo.Auth
 @{
     User user = Auth.GetUser(Context);
-    var isLogin = !Auth.IsLogged(Context);
+    bool isLogin = Auth.IsLogged(Context);
 }
 
 <!DOCTYPE html>
@@ -29,9 +29,11 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Bookings/Index">History</a>
-                        </li>
+                        @if(isLogin){
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Bookings/Index">History</a>
+                            </li>
+                        }
                     </ul>
                 </div>
                 <div style="margin: auto; width:200px;">

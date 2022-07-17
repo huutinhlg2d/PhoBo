@@ -28,6 +28,7 @@ E:\NET Project\PhoBo\PhoBo\obj\Debug\net5.0\Razor\Pages\Shared\_Layout.cshtml.g.
 E:\NET Project\PhoBo\PhoBo\obj\Debug\net5.0\Razor\Pages\Shared\_ValidationScriptsPartial.cshtml.g.cs
 E:\NET Project\PhoBo\PhoBo\obj\Debug\net5.0\Razor\Pages\Users\Create.cshtml.g.cs
 E:\NET Project\PhoBo\PhoBo\obj\Debug\net5.0\Razor\Pages\Users\Delete.cshtml.g.cs
+E:\NET Project\PhoBo\PhoBo\obj\Debug\net5.0\Razor\Pages\Users\Details.cshtml.g.cs
 E:\NET Project\PhoBo\PhoBo\obj\Debug\net5.0\Razor\Pages\Users\Index.cshtml.g.cs
 E:\NET Project\PhoBo\PhoBo\obj\Debug\net5.0\Razor\Pages\_ViewImports.cshtml.g.cs
 E:\NET Project\PhoBo\PhoBo\obj\Debug\net5.0\Razor\Pages\_ViewStart.cshtml.g.cs
@@ -440,4 +441,3 @@ E:\NET Project\PhoBo\PhoBo\obj\Debug\net5.0\PhoBo.Views.pdb
 E:\NET Project\PhoBo\PhoBo\obj\Debug\net5.0\PhoBo.csproj.CopyComplete
 E:\NET Project\PhoBo\PhoBo\obj\Debug\net5.0\PhoBo.genruntimeconfig.cache
 E:\NET Project\PhoBo\PhoBo\obj\Debug\net5.0\ref\PhoBo.dll
-E:\NET Project\PhoBo\PhoBo\obj\Debug\net5.0\Razor\Pages\Users\Details.cshtml.g.cs

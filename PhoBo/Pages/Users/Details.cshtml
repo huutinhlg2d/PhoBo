@@ -1,4 +1,5 @@
 ﻿@page
+@using PhoBo.Models
 @model PhoBo.Pages.Users.DetailsModel
 
 @{
@@ -37,13 +38,13 @@
                         <a href="#" class="tm-text-primary mr-4 mb-2 d-inline-block">Nature</a>
                         <a href="#" class="tm-text-primary mr-4 mb-2 d-inline-block">Background</a>
                     </div>
-                    <div class="text-center">
-                        <a href="#" class="btn btn-primary tm-btn-big">BOOK</a>
-                    </div>
+                    @if(Model.CurrentUser?.Role.Equals(UserRole.Customer) ?? false)
+                    {
+                        <div class="text-center">
+                            <a asp-page="../Bookings/Book" asp-route-id="@Model.User.Id" class="btn btn-primary tm-btn-big">BOOK</a>
+                        </div>
+                    }
                 }
-
-
-
             </div>
         </div>
     </div>

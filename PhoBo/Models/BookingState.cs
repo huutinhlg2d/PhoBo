@@ -3,7 +3,7 @@
     public enum BookingState
     {
         Accepted,
-        Denied,
+        Declined,
         Canceled,
         Waiting,
         Expired

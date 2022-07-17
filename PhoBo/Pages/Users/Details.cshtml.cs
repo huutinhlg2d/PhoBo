@@ -20,6 +20,7 @@ namespace PhoBo.Pages.Users
         }
 
         public User User { get; set; }
+        public User CurrentUser { get; set; }
         public Photographer Photographer { get; set; }
         public int something { get; set; }
 
@@ -30,6 +31,7 @@ namespace PhoBo.Pages.Users
                 return NotFound();
             }
 
+            CurrentUser = Auth.Auth.GetUser(HttpContext);
             User = await _context.User.FirstOrDefaultAsync(m => m.Id == id);
 
             Photographer = await _context.Photographer.FirstOrDefaultAsync(m => m.Id == id);

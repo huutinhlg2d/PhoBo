@@ -65,6 +65,7 @@ namespace PhoBo.Pages.Bookings
             Booking.PhotographerId = photographerId;
             Booking.Duration = float.Parse(Request.Form["duration"]);
             Booking.BookingDate = DateTime.Now;
+            Booking.State = BookingState.Waiting;
 
             Debug.WriteLine($"DEBUG: {Booking.ConceptId} " +
                 $"{Booking.CustomerId} " +

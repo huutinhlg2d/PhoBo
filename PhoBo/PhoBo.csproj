@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\lib\img_avatar.png" />
+    <None Include="wwwroot\img\avatar\img_avatar.png" />
   </ItemGroup>
 
   <ItemGroup>

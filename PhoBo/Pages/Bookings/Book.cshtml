@@ -10,9 +10,9 @@
     };
 }
 
-<h1>Book</h1>
+<h1>Booking</h1>
 
-<h4>Booking</h4>
+<h4>@Model.Photographer.Name</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -20,7 +20,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label for="concept" class="control-label">Concept</label>
-                <select id="concept" name="conceptId" asp-items="Model.PhotographerConcepts" class="form-control"></select>
+                <select id="concept" name="conceptId" asp-items="Model.PhotographerConcepts" class="form-select"></select>
             </div>
             <div id="duration" class="form-group">
             </div>
@@ -61,5 +61,4 @@
             });
         }
     </script>
-
 }
