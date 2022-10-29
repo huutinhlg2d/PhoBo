@@ -8,6 +8,23 @@ namespace PhoBo.Models
         public float Rate { get; set; }
 
         [InverseProperty("Photographer")]
-        public ICollection<Booking> PhotographerBookings;
+        public ICollection<Booking> PhotographerBookings { get; set; }
+
+        public ICollection<BookingConceptConfig> BookingConceptConfigs { get; set; }
+
+        public Photographer()
+        {
+        }
+
+        public Photographer(User user)
+        {
+            this.Name = user.Name;
+            this.Email = user.Email;
+            this.Password = user.Password;
+            this.DateOfBirth = user.DateOfBirth;
+            this.Role = user.Role;
+            this.AvatarUrl = user.AvatarUrl;
+            this.Rate = 0;
+        }
     }
 }

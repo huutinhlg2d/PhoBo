@@ -32,9 +32,13 @@ namespace PhoBo.Pages.Users
             }
 
             CurrentUser = Auth.Auth.GetUser(HttpContext);
-            User = await _context.User.FirstOrDefaultAsync(m => m.Id == id);
 
-            Photographer = await _context.Photographer.FirstOrDefaultAsync(m => m.Id == id);
+            User = await _context.User.SingleAsync(m => m.Id == id);
+
+            Photographer = await _context.Photographer
+                .Include(p => p.BookingConceptConfigs)
+                .ThenInclude(bcc => bcc.Concept)
+                .SingleAsync(m => m.Id == id);
 
             if (User == null)
             {

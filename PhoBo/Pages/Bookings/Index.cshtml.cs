@@ -89,5 +89,36 @@ namespace PhoBo.Pages.Bookings
 
             return new JsonResult(new { result = "OK", value = "Declined" });
         }
+
+        //public JsonResult OnPostRate(int id, float rate)
+        //{
+        //    Debug.WriteLine($"[{this}]POST: id={id}");
+
+        //    Booking booking = _context.Booking.ToList().Find(b => b.Id == id);
+
+        //    Console.WriteLine($"{(booking?.State.Equals(BookingState.Accepted) ?? false)} {!(booking?.BookingRate.Equals(0) ?? false)}");
+
+        //    if (!(booking?.State.Equals(BookingState.Accepted) ?? false) && !(booking?.BookingRate.Equals(0) ?? false))  return new JsonResult(new { result = "ERROR", value = "can not rate" });
+
+        //    booking.BookingRate = rate;
+        //    //_context.SaveChanges();
+
+        //    return new JsonResult(new { result = "OK", value = rate });
+        //}
+
+        public IActionResult OnPostRate(int id, float rate)
+        {
+            Debug.WriteLine($"[{this}]POST: id={id}");
+
+            Booking booking = _context.Booking.ToList().Find(b => b.Id == id);
+
+            if ((booking?.State.Equals(BookingState.Accepted) ?? false) && (booking?.BookingRate.Equals(0) ?? false))
+            {
+                booking.BookingRate = rate;
+                _context.SaveChanges();
+            }
+
+            return RedirectToPage("./Index");
+        }
     }
 }

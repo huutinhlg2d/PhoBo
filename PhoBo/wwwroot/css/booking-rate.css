@@ -1,0 +1,49 @@
+﻿.full-star {
+  /* use display:inline-flex to prevent whitespace issues. alternatively, you can put all the children of .rating-group on a single line */
+  /* make hover effect work properly in IE */
+  /* hide radio inputs */
+  /* hide 'none' input from screenreaders */
+  /* set icon padding and size */
+  /* set default star color */
+  /* if any input is checked, make its following siblings grey */
+  /* make all stars orange on rating group hover */
+  /* make hovered input's following siblings grey on hover */
+}
+.full-star .rating-group {
+  display: inline-flex;
+}
+.full-star .rating__icon {
+  pointer-events: none;
+}
+.full-star .rating__input {
+  position: absolute !important;
+  left: -9999px !important;
+}
+.full-star .rating__input--none {
+  display: none;
+}
+.full-star .rating__label {
+  cursor: pointer;
+  padding: 0 0.1em;
+  font-size: 1rem;
+}
+.full-star .rating__icon--star {
+  color: orange;
+}
+.full-star .rating__input:checked ~ .rating__label .rating__icon--star {
+  color: #ddd;
+}
+.full-star .rating-group:not([disabled]):hover .rating__label .rating__icon--star {
+    color: orange;
+}
+.full-star .rating__input:not([disabled]):hover ~ .rating__label .rating__icon--star {
+    color: #ddd;
+}
+
+    .full-star .rating-group[disabled] .rating__label{
+        cursor: default;
+    }
+body {
+  padding: 1rem;
+  text-align: center;
+}

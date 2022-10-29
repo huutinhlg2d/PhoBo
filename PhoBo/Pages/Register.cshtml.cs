@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -5,6 +6,8 @@ using Newtonsoft.Json;
 using PhoBo.Models;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace PhoBo.Pages
 {
@@ -12,9 +15,11 @@ namespace PhoBo.Pages
     {
         private readonly PhoBo.Data.PhoBoContext _context;
 
-        public RegisterModel(PhoBo.Data.PhoBoContext context)
+        private IHostingEnvironment _environment;
+        public RegisterModel(PhoBo.Data.PhoBoContext context, IHostingEnvironment environment)
         {
             _context = context;
+            _environment = environment;
         }
 
         [BindProperty(SupportsGet = true)]
@@ -45,7 +50,7 @@ namespace PhoBo.Pages
             }
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPost()
         {
             Debug.WriteLine("POST: Register = " + JsonConvert.SerializeObject(Register));
 
@@ -56,12 +61,32 @@ namespace PhoBo.Pages
 
             User user = Register.GetUser();
 
-            if (user.Role == UserRole.Photographer) user.Role = UserRole.PendingPhotographer;
+            if (user.Role == UserRole.Photographer)
+            {
+                user.Role = UserRole.PendingPhotographer;
+                _context.User.Add(user);
+            }
+            else
+            {
+                _context.Customer.Add(new Customer(user));
+            }
 
             Debug.WriteLine("POST: user = " + JsonConvert.SerializeObject(user));
 
-            _context.User.Add(user);
+            if(user.AvatarUrl != null)
+            {
+                System.Console.WriteLine($"{_environment.WebRootPath} {user.AvatarUrl}");
+                var file = Path.GetFullPath(user.AvatarUrl,_environment.WebRootPath);
+                System.Console.WriteLine(file);
+
+                using (var fileStream = new FileStream(file, FileMode.Create))
+                {
+                    await Register.AvatarFile.CopyToAsync(fileStream);
+                }
+            }
+
             _context.SaveChanges();
+
 
             return RedirectToPage("./Login");
         }

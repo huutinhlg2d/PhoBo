@@ -22,19 +22,23 @@ namespace PhoBo.Pages.Bookings
 
         [BindProperty]
         public Photographer Photographer { get; set; }
+        public User CurrentUser { get; set; }
         public List<BookingConceptConfig> BookingConceptConfigs { get; set; } 
-        public IActionResult OnGet(int id)
+        public IActionResult OnGet()
         {
-            Debug.WriteLine("GET");
-            if (!_context.Photographer.Where(x => x.Id == id).Any())
+            Debug.WriteLine($"[{this}]GET: ");
+
+            CurrentUser = Auth.Auth.GetUser(HttpContext);
+
+            if (CurrentUser == null || CurrentUser.Role != UserRole.Photographer)
             {
                 return NotFound();
             }
 
-            Photographer = _context.Photographer.Where(x => x.Id == id).FirstOrDefault();
+            Photographer = _context.Photographer.Where(x => x.Id == CurrentUser.Id).FirstOrDefault();
 
             BookingConceptConfigs = _context.BookingConceptConfig.Include(bcc => bcc.Concept)
-                .Where(bcc => bcc.PhotographerId == id)
+                .Where(bcc => bcc.PhotographerId == CurrentUser.Id)
                 .ToList();
 
             return Page();
@@ -104,13 +108,13 @@ namespace PhoBo.Pages.Bookings
             return Partial("_AddConceptConfigPartial", conceptItems);
         }
 
-        public JsonResult OnPost()
+        public JsonResult OnPost(int id)
         {
-            System.Console.WriteLine("photographerId " + Photographer.Id);
+            System.Console.WriteLine("photographerId " + id);
             BookingConceptConfig bookingConceptConfig = new BookingConceptConfig
             {
                 ConceptId = int.Parse(Request.Form["conceptId"]),
-                PhotographerId = Photographer.Id,
+                PhotographerId = id,
                 DurationConfig = Request.Form["duration"]
             };
 

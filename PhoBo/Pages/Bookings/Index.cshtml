@@ -5,6 +5,8 @@
     User user = Model.currentUser;  
 }
 
+<link rel="stylesheet" type="text/css" href="~/css/booking-rate.css"/>
+
 <h1>Booking history</h1>
 
 <table class="table">
@@ -75,7 +77,67 @@
                         @Html.DisplayFor(modelItem => item.BookingDate)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.BookingRate)
+            
+                        @if(item.State.Equals(BookingState.Accepted))
+                        {
+                            @if (user.Role.Equals(UserRole.Customer))
+                            {
+                                <form method="post" asp-page-handler="rate" asp-route-id="@item.Id" id="rate-form-@item.Id">
+                                    <div class="full-star">
+                                        <div class="rating-group" @(item.BookingRate > 0 ? "disabled": "")>
+                                            
+                                            <input @(item.BookingRate == 0 ? "checked": "") class="rating__input rating__input--none" name="rate" id="rating-none-@item.Id" value="0" type="radio">
+                                            <label aria-label="1 star" class="rating__label" for="rating-1-@item.Id"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+                                            <input @(item.BookingRate == 1 ? "checked": "") @(item.BookingRate > 0 ? "disabled": "") class="rating__input" name="rate" id="rating-1-@item.Id" value="1" type="radio" data-id="@item.Id">
+                                            <label aria-label="2 stars" class="rating__label" for="rating-2-@item.Id"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+                                            <input @(item.BookingRate == 2 ? "checked": "") @(item.BookingRate > 0 ? "disabled": "") class="rating__input" name="rate" id="rating-2-@item.Id" value="2" type="radio" data-id="@item.Id">
+                                            <label aria-label="3 stars" class="rating__label" for="rating-3-@item.Id"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+                                            <input @(item.BookingRate == 3 ? "checked": "") @(item.BookingRate > 0 ? "disabled": "") class="rating__input" name="rate" id="rating-3-@item.Id" value="3" type="radio" data-id="@item.Id">
+                                            <label aria-label="4 stars" class="rating__label" for="rating-4-@item.Id"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+                                            <input @(item.BookingRate == 4 ? "checked": "") @(item.BookingRate > 0 ? "disabled": "") class="rating__input" name="rate" id="rating-4-@item.Id" value="4" type="radio" data-id="@item.Id">
+                                            <label aria-label="5 stars" class="rating__label" for="rating-5-@item.Id"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+                                            <input @(item.BookingRate == 5 ? "checked": "") @(item.BookingRate > 0 ? "disabled": "") class="rating__input" name="rate" id="rating-5-@item.Id" value="5" type="radio" data-id="@item.Id">
+                                        </div>
+                                    </div>
+
+        @*                           <div class="full-star">
+                                        <div class="rating-group">
+                                            <input checked class="rating__input rating__input--none" asp-for="@item.BookingRate" value="0" type="radio">
+                                            <label aria-label="1 star" class="rating__label" asp-for="@item.BookingRate"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+                                            <input class="rating__input" asp-for="@item.BookingRate" value="1" type="radio">
+                                            <label aria-label="2 stars" class="rating__label" asp-for="@item.BookingRate"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+                                            <input class="rating__input" asp-for="@item.BookingRate" value="2" type="text">
+                                            <label aria-label="3 stars" class="rating__label" asp-for="@item.BookingRate"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+                                            <input class="rating__input" asp-for="@item.BookingRate" value="3" type="radio">
+                                            <label aria-label="4 stars" class="rating__label" asp-for="@item.BookingRate"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+                                            <input class="rating__input" asp-for="@item.BookingRate" value="4" type="radio">
+                                            <label aria-label="5 stars" class="rating__label" asp-for="@item.BookingRate"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+                                            <input class="rating__input" asp-for="@item.BookingRate" value="5" type="radio">
+                                        </div>
+                                    </div>*@
+                                </form>
+                            }
+                            else if (user.Role.Equals(UserRole.Photographer))
+                            {
+                                <div class="full-star">
+                                    <div class="rating-group" disabled>
+                                        <input @(item.BookingRate == 0 ? "checked": "") class="rating__input rating__input--none" name="rating-@item.Id" id="rating-none-@item.Id" value="0" type="radio">
+                                        <label aria-label="1 star" class="rating__label" for="rating-1-@item.Id"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+                                        <input @(item.BookingRate == 1 ? "checked": "") disabled class="rating__input" name="rating-@item.Id" id="rating-1-@item.Id" value="1" type="radio" data-id="@item.Id">
+                                        <label aria-label="2 stars" class="rating__label" for="rating-2-@item.Id"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+                                        <input @(item.BookingRate == 2 ? "checked": "") disabled class="rating__input" name="rating-@item.Id" id="rating-2-@item.Id" value="2" type="radio" data-id="@item.Id">
+                                        <label aria-label="3 stars" class="rating__label" for="rating-3-@item.Id"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+                                        <input @(item.BookingRate == 3 ? "checked": "") disabled class="rating__input" name="rating-@item.Id" id="rating-3-@item.Id" value="3" type="radio" data-id="@item.Id">
+                                        <label aria-label="4 stars" class="rating__label" for="rating-4-@item.Id"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+                                        <input @(item.BookingRate == 4 ? "checked": "") disabled class="rating__input" name="rating-@item.Id" id="rating-4-@item.Id" value="4" type="radio" data-id="@item.Id">
+                                        <label aria-label="5 stars" class="rating__label" for="rating-5-@item.Id"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+                                        <input @(item.BookingRate == 5 ? "checked": "") disabled class="rating__input" name="rating-@item.Id" id="rating-5-@item.Id" value="5" type="radio" data-id="@item.Id">
+                                    </div>
+                                </div>
+                            }
+
+                }
+                        @*@Html.DisplayFor(modelItem => item.BookingRate)*@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Duration)
@@ -105,9 +167,13 @@
                                 else if(user.Role.Equals(UserRole.Customer))
                                 {  
                                     <button data-action="Cancel" data-id="@item.Id" class="booking-button btn btn-danger">Cancel</button>
-                            
                                 }
-                            }   
+                            }
+                            
+                            @if (item.State.Equals(BookingState.Accepted) && user.Role.Equals(UserRole.Customer) && item.BookingRate == 0)
+                            {
+                                <button data-action="Rate" data-id="@item.Id" class="rate-button btn btn-warning">Rate</button>
+                            }
                         </div>
                     </td>
                 </tr>
@@ -143,5 +209,10 @@
                 }
             });
         });
+
+        $(".rate-button").click(function() {
+            _this = $(this);
+            $("#rate-form-" + _this.data("id")).trigger("submit");
+        })
     </script>
 }

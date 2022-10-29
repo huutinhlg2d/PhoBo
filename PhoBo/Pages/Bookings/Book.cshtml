@@ -3,6 +3,7 @@
 
 @{
     ViewData["Title"] = "Book";
+    var photographer = Model.Photographer;
     var keyValuePairs = new Dictionary<string, string>
     {
         { "customerId", @Model.Customer.Id.ToString() },
@@ -56,7 +57,7 @@
 
         function loadDuration() {
             let conceptId = $('#concept').val();
-            $('#duration').load('?handler=Duration&conceptId=' + conceptId, function() {
+            $('#duration').load('?handler=Duration&conceptId=' + conceptId + "&photographerId=" + @photographer.Id, function() {
                 $('#duration input[type="radio"]:first').trigger('click');
             });
         }

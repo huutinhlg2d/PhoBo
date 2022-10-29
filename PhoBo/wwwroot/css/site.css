@@ -168,6 +168,10 @@ a {
     max-width: 1050px;
 }
 
+.img-avatar{
+    border-radius: 100%;
+}
+
 .btn {
     /*border-radius: 0;*/
 }
@@ -354,6 +358,10 @@ p, .tm-text-gray {
         min-height: 100%;
         max-width: 100%;
         opacity: 0.8;
+        width: 255px;
+        height: 145px;
+        object-fit: cover;
+        object-position: center;
     }
 
     .tm-video-item figcaption {

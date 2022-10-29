@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using PhoBo.Models;
+using System.Diagnostics;
 
 namespace PhoBo.Auth
 {
@@ -16,6 +17,10 @@ namespace PhoBo.Auth
         public static bool IsLogged(HttpContext context)
         {
             return GetUser(context) != null;
+        }
+
+        public static void Logout(HttpContext context) {
+            context.Session.Remove("user");
         }
     }
 }

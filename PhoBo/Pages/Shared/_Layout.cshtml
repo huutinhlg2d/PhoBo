@@ -3,9 +3,8 @@
 @using PhoBo.Auth
 @{
     User user = Auth.GetUser(Context);
-    bool isLogin = Auth.IsLogged(Context);
+    var isLogin = Auth.IsLogged(Context);
 }
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,6 +13,7 @@
     <title>@ViewData["Title"] - PhoBo</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
     <header>
@@ -34,14 +34,25 @@
                                 <a class="nav-link text-dark" asp-area="" asp-page="/Bookings/Index">History</a>
                             </li>
                         }
+                        @if(isLogin && user.Role.Equals(UserRole.Photographer)){
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Bookings/Config">Config</a>
+                            </li>
+                        }
+                        @if(isLogin && user.Role.Equals(UserRole.Admin)){
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Users/Index">User Management</a>
+                            </li>
+                        }
                     </ul>
                 </div>
                 <div style="margin: auto; width:200px;">
                     @if (isLogin)
                     {
-                        <img src="@(user?.AvatarUrl ?? "img/avatar/img_avatar.png")" style="object-fit: cover; background-color: pink; width: 50px; height: 50px; border-radius: 50%; display: inline-block;">
-                        <a class="nav-link text-dark" style="display: inline-block;" asp-page="/Index">Logout</a>
-                    } else
+                        <img src="/@(user?.AvatarUrl ?? "img/avatar/img_avatar.png")" style="object-fit: cover; background-color: pink; width: 50px; height: 50px; border-radius: 50%; display: inline-block;">
+                        <a class="nav-link text-dark" style="display: inline-block;" asp-page="/Logout">Logout</a>
+                    }
+                    else
                     {
                         <div>
                             <a class="nav-link text-dark" style="display: inline-block;" asp-page="/Login">Login</a> |
@@ -75,13 +86,13 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-@*    <script src="~/js/site.js" asp-append-version="true"></script>*@
+    @*    <script src="~/js/site.js" asp-append-version="true"></script>*@
     <script src="~/js/plugins.js"></script>
     <!-- End Page Loader -->
     <script>
-            $(window).on("load", function() {
-                $('body').addClass('loaded');
-            });
+        $(window).on("load", function () {
+            $('body').addClass('loaded');
+        });
     </script>
 
     @await RenderSectionAsync("Scripts", required: false)

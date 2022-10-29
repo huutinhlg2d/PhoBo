@@ -16,6 +16,8 @@ namespace PhoBo.Pages
         public LoginModel(PhoBo.Data.PhoBoContext context)
         {
             _context = context;
+            HttpContext?.Session.SetString("user", "");
+            HttpContext?.Session.Remove("user");
         }
 
         public string Message { get; set; }

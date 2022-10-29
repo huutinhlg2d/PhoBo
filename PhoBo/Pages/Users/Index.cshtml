@@ -1,4 +1,5 @@
 ﻿@page
+@using PhoBo.Models
 @model PhoBo.Pages.Users.IndexModel
 
 @{
@@ -10,7 +11,7 @@
 <p>
     <a asp-page="Create">Create New</a>
 </p>
-<img src="@Url.Content(@"~/Resources/Images/Kanna Makino 2.jpg")" />
+
 <table class="table">
     <thead>
         <tr>
@@ -47,13 +48,49 @@
             <td>
                 @Html.DisplayFor(modelItem => item.DateOfBirth)
             </td>
-            <td>
+            <td id="user-@item.Id-role">
                 @Html.DisplayFor(modelItem => item.Role)
             </td>
             <td>
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                @Html.AntiForgeryToken()
+                <div>
+                    @if (item.Role.Equals(UserRole.PendingPhotographer))
+                    {
+                        <button data-action="Accept" data-id="@item.Id" class="booking-button btn btn-primary">Accept</button>
+                    }
+                </div>
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $(".booking-button").click(function() {
+            let _this = $(this);
+            let id = _this.data("id");
+            let action = _this.data("action");
+            let token = $('input[name="__RequestVerificationToken"]').val();
+
+            console.log(`?handler=${action}`);
+
+            $.ajax({
+                url: `?handler=${action}`,
+                headers: {"RequestVerificationToken": token},
+                type: "POST",
+                data: { id: id },
+                success: function(response) {
+                    if (response.result == "OK") {
+                        _this.parent().remove();
+                        $(`#user-${id}-role`).html(response.value);
+                    } else {
+                        console.log(response.value);
+                    }
+                }
+            });
+        });
+    </script>
+}

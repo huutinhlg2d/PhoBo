@@ -12,7 +12,7 @@
 <h4>Concept Configuration</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-12">
         @foreach(BookingConceptConfig config in Model.BookingConceptConfigs)
         {
             <div id="config-container-@config.Id">
@@ -20,7 +20,7 @@
                     <h5>@config.Concept.Name</h5>
                     <div class="form-group">
                         <label asp-for="@config.DurationConfig" class="control-label mr-4">Duration Config</label>
-                        <input id="duration-config-@config.Id" asp-for="@config.DurationConfig" disabled class="form-control mr-2" />
+                        <input id="duration-config-@config.Id" asp-for="@config.DurationConfig" disabled class="col-5 mr-2" />
                         <input type="button" class="edit-func-button btn btn-primary mr-2" value="Edit" data-id="@config.Id"/>
                         <input type="button" class="delete-func-button btn btn-danger mr-2" value="Delete" data-id="@config.Id"/>
                     </div>
@@ -33,9 +33,9 @@
 
 <div>
     <div id="add-func-buttons" class="d-flex mt-3">
-        <button class="btn btn-primary mr-2" id="add-button">Add new</button>
-        <button class="btn btn-primary mr-2" id="ok-button">Ok</button>
-        <button class="btn btn-danger mr-2" id="cancel-button">Cancel</button>
+        <button class="btn btn-primary me-2" id="add-button">Add new</button>
+        <button class="btn btn-primary me-2" id="ok-button">Ok</button>
+        <button class="btn btn-danger me-2" id="cancel-button">Cancel</button>
     </div>
     <div id="add-container"></div>
 </div>
@@ -124,8 +124,10 @@
 
         _ok.click(function() {
             var formData = new FormData($('#add-config-form')[0]);
+            formData.append("id", @photographerId);
             _input = $("#add-duration");
 
+            console.log(formData);
 
             if(validateDuration(_input)){
                 $(`#${_input.attr("id")}-error`).html("");
@@ -138,7 +140,7 @@
                     dataType: "json",
                     success: function(response) {
                         console.log('success');
-                        $(location).attr('href', 'https://localhost:44337/Bookings/Config?id=1');
+                        $(location).attr('href', 'https://localhost:44337/Bookings/Config?id=@photographerId');
                     }
                 });
             } 

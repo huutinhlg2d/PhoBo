@@ -8,19 +8,14 @@
 
 <div class="container-fluid tm-container-content tm-mt-60">
     <div class="row mb-4">
-        <h2 class="col-12 tm-text-primary">Detail</h2>
+        <h2 class="col-12 tm-text-primary">@Model.User.Name</h2>
     </div>
     <div class="row tm-mb-90">
         <div class="col-xl-8 col-lg-7 col-md-6 col-sm-12">
-            <img src="~/lib/img/img-01.jpg" alt="Image" class="img-fluid" style="width: 100%">
+            <img src="/@Model.User.AvatarUrl" alt="Image" class="img-fluid" style="width: 100%">
         </div>
         <div class="col-xl-4 col-lg-5 col-md-6 col-sm-12">
             <div class="tm-bg-gray tm-video-details">
-
-                <div class="mb-4">
-                    <h4 class="tm-text-gray-dark mb-3" style=" display: inline-block; margin-right: 20px;">Name</h4>
-                    <p style="display: inline-block; font-size:20px;">@Model.User.Name</p>
-                </div>
                 <div class="mb-4">
                     <h4 class="tm-text-gray-dark mb-3" style=" display: inline-block; margin-right: 38px;">Role</h4>
                     <p style="display: inline-block; font-size: 20px;">@Model.User.Role</p>
@@ -28,6 +23,15 @@
                 @if (Model.User.Role == Models.UserRole.Photographer)
                 {
                     <div class="mb-4">
+                        <h4 class="tm-text-gray-dark mb-3" style=" display: inline-block; margin-right: 38px;">Concept</h4>
+                        <ul class="list-group">
+                           @foreach (BookingConceptConfig bcc in @Model.Photographer.BookingConceptConfigs)
+                           {
+                                <li class="list-group-item list-group-item-secondary list-group-item-action">@bcc.Concept.Name</li>
+                           }  
+                        </ul>                  
+                    </div>
+@*                    <div class="mb-4">
                         <h4 class="tm-text-gray-dark mb-3" style=" display: inline-block; margin-right: 36px;">Rate</h4>
                         <p style="display: inline-block; font-size: 20px;">@Model.Photographer.Rate</p>
                     </div>
@@ -37,8 +41,9 @@
                         <a href="#" class="tm-text-primary mr-4 mb-2 d-inline-block">Bluesky</a>
                         <a href="#" class="tm-text-primary mr-4 mb-2 d-inline-block">Nature</a>
                         <a href="#" class="tm-text-primary mr-4 mb-2 d-inline-block">Background</a>
-                    </div>
-                    @if(Model.CurrentUser?.Role.Equals(UserRole.Customer) ?? false)
+                    </div>*@
+                    
+                    @if((Model.CurrentUser?.Role.Equals(UserRole.Customer) ?? false) && Model.Photographer.BookingConceptConfigs.Count() > 0)
                     {
                         <div class="text-center">
                             <a asp-page="../Bookings/Book" asp-route-id="@Model.User.Id" class="btn btn-primary tm-btn-big">BOOK</a>
@@ -48,11 +53,11 @@
             </div>
         </div>
     </div>
-    @if (Model.User.Role == Models.UserRole.Photographer)
+    @*@if (Model.User.Role == Models.UserRole.Photographer)
     {
         <div class="row mb-4">
             <h2 class="col-12 tm-text-primary">
-                Project
+                Concept
             </h2>
         </div>
         <div class="row mb-3 tm-gallery">
@@ -161,6 +166,6 @@
                 </div>
             </div>
         </div> <!-- row -->
-    }
+    }*@
 
 </div> <!-- container-fluid, tm-container-content -->

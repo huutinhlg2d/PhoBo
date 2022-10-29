@@ -33,12 +33,16 @@ namespace PhoBo.Pages.Bookings
                 return NotFound();
             }
 
-            Customer = _context.Customer.First();
+            User currentUser = Auth.Auth.GetUser(HttpContext);
+            Customer = _context.Customer.ToList().Find(c => c.Id == currentUser.Id);
             Photographer = _context.Photographer.Where(x => x.Id == id).FirstOrDefault();
 
             List<BookingConceptConfig> bookingConceptConfigs = _context.BookingConceptConfig.Include(bcc => bcc.Concept)
                 .Where(bck => bck.PhotographerId == id)
                 .ToList();
+
+            if(bookingConceptConfigs.Count == 0) return NotFound();
+
             PhotographerConcepts = bookingConceptConfigs.Select(bcc =>
                 new SelectListItem
                 {
@@ -79,10 +83,11 @@ namespace PhoBo.Pages.Bookings
             return Redirect("?id=" + photographerId);
         }
 
-        public PartialViewResult OnGetDuration(int conceptId)
+        public PartialViewResult OnGetDuration(int conceptId, int photographerId)
         {
-            string durationConfig = _context.BookingConceptConfig.Where(bcc => bcc.ConceptId == conceptId)
-                .ToList()[0]
+            User currentUser = Auth.Auth.GetUser(HttpContext);
+            string durationConfig = _context.BookingConceptConfig.ToList()
+                .Find(bcc => bcc.ConceptId == conceptId && bcc.PhotographerId == photographerId)
                 .DurationConfig;
             List<string> durationConfigList = durationConfig.Split(':').ToList();
 
